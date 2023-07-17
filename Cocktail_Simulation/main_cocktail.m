@@ -9,11 +9,6 @@ end
 Dox_retained=zeros(1,np);
 DoxB_retained=zeros(1,np);
 i=1:np; 
-load porosity
-phiL=xpor(1)*xpt.^xpor(2)+xpor(3); phiL=1;
-%load porosity_drug_ne
-%phiD=xporD(1)*xpt.^xporD(2)+xporD(3); 
-phiD= 0.7313; phiD=1;
 
 Drug_Lip = 1*0.06*0.50; %uM
 Lipsol = Drug_Lip/0.002; %uM
@@ -25,14 +20,14 @@ for count=1:12
     for met=1:2:21
         Dox_retained=Dox_retained+Ytheorup(count,26*(i-1)+met)*content(met)*Drug_Lip*1000; %nM
     end
-    Dox_retained=Dox_retained.*phiL'; 
+    
     for met=2:2:22
         DoxB_retained=DoxB_retained+Ytheorup(count,26*(i-1)+met)*content(met)*Drug_Lip*1000; %nM
     end
-    DoxB_retained=DoxB_retained.*phiL'; 
+    
 
-Doxfree_intern = (Ytheorup(count,26*(i-1)+23).*phiD'+Ytheorup(count,26*(i-1)+25).*phiD')*Drug_Lip*1000; %nM
-DoxBfree_intern = (Ytheorup(count,26*(i-1)+24).*phiD'+Ytheorup(count,26*(i-1)+26).*phiD')*Drug_Lip*1000; %nM
+Doxfree_intern = (Ytheorup(count,26*(i-1)+23)+Ytheorup(count,26*(i-1)+25))*Drug_Lip*1000; %nM
+DoxBfree_intern = (Ytheorup(count,26*(i-1)+24)+Ytheorup(count,26*(i-1)+26))*Drug_Lip*1000; %nM
 
 Doxfree_intern_Lip(end+1,:)=Doxfree_intern;
 Dox_retained_Lip(end+1,:)=Dox_retained;
@@ -46,19 +41,19 @@ for count=1:193
     for met=1:2:21
         Dox_retained=Dox_retained+Ytheorcl(count,26*(i-1)+met)*content(met)*Drug_Lip*1000; %nM
     end
-    Dox_retained=Dox_retained.*phiL'; 
+    
 
     DoxB_retained=zeros(1,np); 
     for met=2:2:22
         DoxB_retained=DoxB_retained+Ytheorcl(count,26*(i-1)+met)*content(met)*Drug_Lip*1000; %nM
     end
-    DoxB_retained=DoxB_retained.*phiL'; 
+    
 
-Doxfree_intern = (Ytheorcl(count,26*(i-1)+23).*phiD'+Ytheorcl(count,26*(i-1)+25).*phiD')*Drug_Lip*1000; %nM
+Doxfree_intern = (Ytheorcl(count,26*(i-1)+23)+Ytheorcl(count,26*(i-1)+25))*Drug_Lip*1000; %nM
 Doxfree_intern_Lip(end+1,:)=Doxfree_intern;
 Dox_retained_Lip(end+1,:)=Dox_retained;
 
-DoxBfree_intern = (Ytheorcl(count,26*(i-1)+24).*phiD'+Ytheorcl(count,26*(i-1)+26).*phiD')*Drug_Lip*1000; %nM
+DoxBfree_intern = (Ytheorcl(count,26*(i-1)+24)+Ytheorcl(count,26*(i-1)+26))*Drug_Lip*1000; %nM
 DoxBfree_intern_Lip(end+1,:)=DoxBfree_intern;
 DoxB_retained_Lip(end+1,:)=DoxB_retained;
 end
@@ -70,20 +65,17 @@ clear
 
 
 Drug_Ab = 0.06*0.50; %uM (if 1 mole of drug corresponds to 4 moles of Ab)
-load omkar_measurements
-%Rt=Rt*2; 
+load antibodies_experimental.mat
 Abbulk=Drug_Ab*4*1000; %nM
 antibodies_uptake_clearance_simulation
-load porosity_new
-phi=xpor(1)*xpt.^xpor(2)+xpor(3); phi=1;
 j=1:np; 
 
 Dox_Antibodies=[]; DoxB_Antibodies=[];
 for count=1:48
-y1=1*Ytheorup(count,6*(j-1)+1).*phi';
-y1B=1*Ytheorup(count,6*(j-1)+2).*phi';
-y2=1*Ytheorup(count,6*(j-1)+3)*Rt/Abbulk;
-y2B=1*Ytheorup(count,6*(j-1)+4)*Rt/Abbulk;
+y1=Ytheorup(count,6*(j-1)+1);
+y1B=Ytheorup(count,6*(j-1)+2);
+y2=Ytheorup(count,6*(j-1)+3)*Rt/Abbulk;
+y2B=Ytheorup(count,6*(j-1)+4)*Rt/Abbulk;
 y3=Ytheorup(count,6*(j-1)+5);
 y3B=Ytheorup(count,6*(j-1)+6);
 
@@ -95,8 +87,8 @@ DoxB_Antibodies(end+1,:)=DoxB_Ab;
 end
 
 for count=1:193
-y1=1*Ytheorcl(count,6*(j-1)+1).*phi';
-y1B=1*Ytheorcl(count,6*(j-1)+2).*phi';
+y1=1*Ytheorcl(count,6*(j-1)+1);
+y1B=1*Ytheorcl(count,6*(j-1)+2);
 y2=1*Ytheorcl(count,6*(j-1)+3)*Rt/Abbulk;
 y2B=1*Ytheorcl(count,6*(j-1)+4)*Rt/Abbulk;
 y3=Ytheorcl(count,6*(j-1)+5);
@@ -154,17 +146,7 @@ end
 
 save results_radio 'Int_Radio' 'Ti' 'Int2_Radio' 'xpt'
 
-Int_critical=10;
-for count=1:sz(1)
-    [i,j]=find(Int_Radio(count,:)>=Int_critical);
-    if isempty(j)
-        Fr_Radio(end+1)=0; 
-    else
-        Fr_Radio(end+1)=100*((xpt(j(end))/xpt(end))^3-(xpt(j(1))/xpt(end))^3);
-    end
-end
 
-save Fractions_Uptake_Release_10 'Fr_Radio'  'Ti'
     
 
 
