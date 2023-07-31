@@ -1,4 +1,4 @@
-function f=experimental_fitting_uptake_clearance(x)
+function f=experimental_fitting(x)
 
 % Fitting of porosity functional for non-specific Antibodies
 % The general form is: 
