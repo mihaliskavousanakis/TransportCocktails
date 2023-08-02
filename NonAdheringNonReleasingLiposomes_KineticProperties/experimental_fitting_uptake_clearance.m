@@ -1,7 +1,7 @@
 function Ytheor=experimental_fitting_uptake_clearance(x,X)
 
 % x is the parameter vector consisting of: x= [ Deff, Pup, Pcl ], i.e.:
-% the effective diffusivity of antibodies, Deff and Pup,Pcl the mass transfer
+% the effective diffusivity of liposomes, Deff and Pup,Pcl the mass transfer
 % coefficient during uptake and clearance experiments, respectively.
 
 %Ytheor corresponds to the vector with normalized liposome concentrations
