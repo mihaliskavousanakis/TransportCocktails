@@ -1,8 +1,8 @@
 function generate_figures(x)
 
-% x is the parameter vector consisting of: x= [ Deff, hd ], i.e.:
-% the effective diffusivity of liposomes, Deff and hd the mass transfer
-% coefficient
+% x is the parameter vector consisting of: x= [ Deff, hd, hcl ], i.e.:
+% the effective diffusivity of liposomes, Deff and hd,hcl the mass transfer
+% coefficients during uptake and clearance experiments
 
 T=readtable('Non-Adhering Liposomes_Uptake and Clearance_Final Concentration.xlsx');
  
