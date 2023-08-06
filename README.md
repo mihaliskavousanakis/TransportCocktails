@@ -17,7 +17,7 @@ The diffusion coefficient can be computed from: xnew(1)*R^2/3600 sec  (R the sph
 The uptake mass transfer coefficient is computed from: xnew(2)*R/3600 sec
 The clearance mass transfer coefficient is computed from: xnew(3)*R/3600 sec
 
-The folder NonSpecificAntibodies_KineticProperties includes all files required to reproduce the fitting of kinetic parameters adopted for the simulation of non-specific Antibodies (Rituximab). 
+The folder NonSpecificAntibodies_TransportProperties includes all files required to reproduce the fitting of kinetic parameters adopted for the simulation of non-specific Antibodies (Rituximab). 
 Executing the script: main_script
 a) generates the mat file (running data_generation) originating from the raw data measurements (Non-specific_Ab_Rituximab_Uptake and Clearance_Antibody.xlsx)
 b) executes nonlinear fitting (function nlnfit) to perform the fit of Ab effective diffusion coefficient, and the mass transfer coefficients during uptake and clearance experiments.
