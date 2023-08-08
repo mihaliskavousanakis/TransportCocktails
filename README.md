@@ -31,3 +31,15 @@ a) generate the mat file (running data_generation) originating from the raw data
 b) executes nonlinear fitting (function nlinfit) to perform the fit of dissociation rate constant, koff (in hrs^(-1)), dissociation equilibrium constant, KD (in nM), and internalization rate constant, kint (in hrs^(-1)). 
 
 Cocktal_Simulation folder includes all files required to reproduce cocktail carrier simulations 
+In particular, all required is to execute script: main_cocktail.m
+To change the Liposome/Ab fraction in the cocktail, change the value of variable Lf (line 16)
+The script calls: 
+1. liposomes_uptake_clearance_simulation.m which performs the uptake and clearance simulation of drug carried by liposomes
+2. antibodies_uptake_clearance_simulation.m, which performs the uptake and clearance simulation of drug carried by antibodies
+At the end, all data are collected to produce the variables denoting the total drug concentration, which is used to produce figures also reported in the
+manuscript. In particular:
+1. drug_3d_Ab_50_Lip_50.m: is executed to generate the spatio-temporal evolution of total drug delivered by Ab/Liposome cocktails (24 hrs total uptake + 8 hrs clearance)
+2. integrated_drug_3d_Ab_50_Lip_50.m: is executed to generate the spatio-temporal evolution of the integrated drug concentration carried by Ab/Liposome cocktails
+3. survival_fraction.m: is executed to generate the figure illustrating the radial distribution of survival fraction of cancer cells
+The script concludes by reporting the average survival fraction throughout the tumor spheroid.  
+
