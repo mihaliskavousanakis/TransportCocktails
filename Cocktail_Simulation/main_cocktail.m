@@ -134,16 +134,7 @@ Int_Radio(j,i)=trapz(Ti(1:j),Drug_Radio(1:j,i)); % integrated drug (active/unspe
 end
 end
 
-% This is the second integration used in Eq. for killing efficiency
-% quantification
-Int2_Radio=zeros(size(Int_Radio));
-for i=1:100
-for j=2:length(Ti)
-Int2_Radio(j,i)=trapz(Ti(1:j),Int_Radio(1:j,i));
-end
-end
-
-save results_radio 'Int_Radio' 'Ti' 'Int2_Radio' 'xpt'
+save results_radio 'Int_Radio' 'Ti' 'xpt'
 
 % Spatio-temporal evolution of total (active and inactive) drug concentration 
 [X,T]=meshgrid(xpt,Ti);
@@ -157,16 +148,17 @@ integrated_drug_3d_Ab_50_Lip_50(X*200, T, Int_Radio, [0 200], [18 18], [0 0])
 % Generate figure illustrating the survival fraction of cancer cells when
 % using a 50/50 Ab/Liposome cocktail 
 % this reproduces the orange line in Figure 1 (C) middle panel
-survival_fraction(xpt*200,exp(-0.002*Int2_Radio(65,:))*100,Lf)
+survival_fraction(xpt*200,exp(-0.015*Int_Radio(65,:))*100,Lf)
 
 % Compute average survival fraction over all tumor spheroid volume 
-x=xpt*200; y=exp(-0.002*Int2_Radio(65,:))*100; y=y';
+x=xpt*200; y=exp(-0.015*Int_Radio(65,:))*100; y=y';
 SF_average=trapz(x,x.^2.*y)*3/x(end)^3;
 
 fprintf(['Cocktail: ',num2str(Lf*60), ' nM carried by Liposomes \n'])
 fprintf(['              ',num2str((1-Lf)*60), ' nM carried by Antibodies \n'])
 fprintf(['Average survival fraction for 200 um spheroid = ', num2str(SF_average),'%% \n'])
 fprintf('\n')
+
 
 
     
