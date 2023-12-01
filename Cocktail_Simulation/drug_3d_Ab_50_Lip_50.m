@@ -30,7 +30,7 @@ zlabel('[C] (nM)','Interpreter','latex');
 ylabel('time (hrs)','Interpreter','latex');
 
 % Create xlabel
-xlabel({'distance from ','spheroid center ($\mu m$)'},'Interpreter','latex');
+xlabel({'distance from ','spheroid surface ($\mu m$)'},'Interpreter','latex');
 
 % Uncomment the following line to preserve the Y-limits of the axes
 % ylim(axes1,[0 36]);
@@ -39,6 +39,6 @@ box(axes1,'on');
 grid(axes1,'on');
 hold(axes1,'off');
 % Set the remaining axes properties
-set(axes1,'FontSize',24,'XMinorTick','on','XTick',[0 50 100 150 200],...
+set(axes1,'FontSize',24,'XDir','reverse','XMinorTick','on','XTick',[0 50 100 150 200 250 300],...
     'YMinorTick','on','YTick',[0 8 16 24 32],'YTickLabel',...
-    {'0','8','16','24','32'},'ZMinorTick','on','ZTick',[0 15 30 45]);
+    {'0','8','16','24','32'},'ZMinorTick','on','ZTick',[0 0.5e-3 1e-3]);

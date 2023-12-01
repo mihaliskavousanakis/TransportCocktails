@@ -32,7 +32,7 @@ zlabel({'Time integrated drug','concentration (nM $\cdot$ hrs)'},...
 ylabel('time (hrs)','FontSize',26.4,'Interpreter','latex');
 
 % Create xlabel
-xlabel({'distance from ','spheroid center ($\mu m$)'},'FontSize',26.4,...
+xlabel({'distance from ','spheroid surface ($\mu m$)'},'FontSize',26.4,...
     'Interpreter','latex');
 
 % Uncomment the following line to preserve the X-limits of the axes
@@ -44,5 +44,5 @@ box(axes1,'on');
 grid(axes1,'on');
 hold(axes1,'off');
 % Set the remaining axes properties
-set(axes1,'FontSize',24,'XTick',[0 50 100 150 200],'YTick',[0 8 16 24 32],...
-    'YTickLabel',{'0','8','16','24','32'},'ZTick',[0 200 400]);
+set(axes1,'FontSize',24,'XDir','reverse','XTick',[0 50 100 150 200 250 300],'YTick',[0 8 16 24 32],...
+    'YTickLabel',{'0','8','16','24','32'},'ZTick',[0 0.005 0.01]);

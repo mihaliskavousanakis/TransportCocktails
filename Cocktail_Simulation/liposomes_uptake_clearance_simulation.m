@@ -9,10 +9,10 @@ for i=2:np
 end
               
 % Setup parameters for simulation
-x(1)=1.5e-13/(200e-6)^2*3600;  % effective diffusivity of liposomes
-x(2)=1.9e-9/(200e-6)*3600; % mass transfer coefficient during uptake
-x(3)=5.8e-9/(200e-6)*3600; % mass transfer coefficient during clearance
-Dd = 8e-4/(200e-6)^2*3600; % effective drug diffusivity 
+x(1)=1.5e-13/(300e-6)^2*3600;  % effective diffusivity of liposomes
+x(2)=1.9e-9/(300e-6)*3600; % mass transfer coefficient during uptake
+x(3)=5.8e-9/(300e-6)*3600; % mass transfer coefficient during clearance
+Dd = 8e-4/(300e-6)^2*3600; % effective drug diffusivity 
 
 % uptake simulation
 [xpt,ytheor_up]=specliposome_uptake([x(1) x(2) Dd]);

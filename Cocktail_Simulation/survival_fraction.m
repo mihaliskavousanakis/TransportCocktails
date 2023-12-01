@@ -1,4 +1,4 @@
-function survival_fraction(xpt1, exp1,Lf)
+function survival_fraction(xpt1, exp1,Lf,Ac_tot)
 %CREATEFIGURE(xpt1, exp1)
 %  XPT1:  vector of plot x data
 %  EXP1:  vector of plot y data
@@ -13,7 +13,7 @@ axes1 = axes;
 hold(axes1,'on');
 
 % Create plot
-plot(xpt1,exp1,'DisplayName',['Ab - Lip: ',num2str((1-Lf)*60), ' nM - ', num2str(Lf*60), ' nM'],...
+plot(xpt1,exp1,'DisplayName',['Ab - Lip: ',num2str((1-Lf)*Ac_tot), ' nM - ', num2str(Lf*Ac_tot), ' nM'],...
     'MarkerIndices',[1 11 21 31 41 51 61 71 81 91],...
     'MarkerSize',8,...
     'Marker','diamond',...
@@ -23,7 +23,7 @@ plot(xpt1,exp1,'DisplayName',['Ab - Lip: ',num2str((1-Lf)*60), ' nM - ', num2str
 ylabel('SF (\%)','Interpreter','latex');
 
 % Create xlabel
-xlabel('distance from spheroid center ($\mu m$)','Interpreter','latex');
+xlabel('distance from spheroid surface ($\mu m$)','Interpreter','latex');
 
 % Uncomment the following line to preserve the Y-limits of the axes
 % ylim(axes1,[0 100]);

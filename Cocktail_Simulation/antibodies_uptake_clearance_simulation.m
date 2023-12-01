@@ -9,9 +9,9 @@ for i=2:np
 end
 
 % Parameters for Ab simulation
-Deff=6e-12/(200e-6)^2*3600; % effective diffusivity of Ab in the spheroids
-hup=2.5e-10/(200e-6)*3600; % mass transfer coefficient during uptake
-hcl=8e-7/(200e-6)*3600; % mass transfer coefficient during clearance
+Deff=6e-12/(300e-6)^2*3600; % effective diffusivity of Ab in the spheroids
+hup=2.5e-10/(300e-6)*3600; % mass transfer coefficient during uptake
+hcl=8e-7/(300e-6)*3600; % mass transfer coefficient during clearance
 koff=1e-2*3600; % dissociation rate constant
 KD=4.5; % dissociation equilbrium constant
 kr=5.5e-6*3600; % internalization rate constant

@@ -12,11 +12,19 @@ Drug_retained=zeros(1,np);
 DrugB_retained=zeros(1,np);
 i=1:np; 
 
+
+% Radioactivity concentration 3.7 MBq/L
+Ac_tot=3.7/(4*log(2)/(9.9*3600*24)*6.022)*10^(-11); %μΜ
+
 % Fraction of drug carried by liposomes
 Lf=0.5;
 
-Drug_Lip = 1*0.06*Lf; %uM
-Lipsol = Drug_Lip/0.002; %uM
+Drug_Lip = 1*Ac_tot*Lf; %uM
+% 0.34 MBq in 1 μmol lipid & 100,000 lipids per liposome
+Ac_ratioLip = 0.34/(4*log(2)/(9.9*3600*24)*6.022)*10^(-6);
+
+
+Lipsol = Drug_Lip/Ac_ratioLip; %uM
 Drugfree_intern_Lip=[];Drug_retained_Lip=[];
 DrugBfree_intern_Lip=[];DrugB_retained_Lip=[];
 for count=1:12
@@ -65,15 +73,19 @@ end
 
 
 save liposomes_drug 'Drug_retained_Lip' 'Drugfree_intern_Lip' 'DrugB_retained_Lip' 'DrugBfree_intern_Lip'
-clearvars -except Lf xpt
+clearvars -except Lf xpt Ac_tot
 
 
 
-Drug_Ab = 0.06*(1-Lf); %uM (if 1 mole of drug corresponds to 4 moles of Ab)
+Drug_Ab = Ac_tot*(1-Lf); %uM 
+
+% 1.87 MBq in 1 mg Cetuximab (152kDa the M.W. of Cetuximab)
+Ac_ratioAb =(1.87/(4*log(2)/(9.9*3600*24)*6.022))*152*10^(-11);
+
 
 if Drug_Ab>0
     load antibodies_experimental.mat
-    Abbulk=Drug_Ab*4*1000; %nM
+    Abbulk=Drug_Ab/Ac_ratioAb*1000; %nM
 
     antibodies_uptake_clearance_simulation
     j=1:np; 
@@ -87,8 +99,8 @@ if Drug_Ab>0
         y3=Ytheorup(count,6*(j-1)+5);
         y3B=Ytheorup(count,6*(j-1)+6);
 
-        Drug_Ab = (y1+y2+y3)*Abbulk/4; %nM
-        DrugB_Ab=(y1B+y2B+y3B)*Abbulk/4; %nM
+        Drug_Ab = (y1+y2+y3)*Abbulk*Ac_ratioAb; %nM
+        DrugB_Ab=(y1B+y2B+y3B)*Abbulk*Ac_ratioAb; %nM
 
         Drug_Antibodies(end+1,:)=Drug_Ab; 
         DrugB_Antibodies(end+1,:)=DrugB_Ab; 
@@ -102,8 +114,8 @@ if Drug_Ab>0
         y3=Ytheorcl(count,6*(j-1)+5);
         y3B=Ytheorcl(count,6*(j-1)+6);
 
-        Drug_Ab = (y1+y2+y3)*Abbulk/4; %nM
-        DrugB_Ab = (y1B+y2B+y3B)*Abbulk/4; %nM
+        Drug_Ab = (y1+y2+y3)*Abbulk*Ac_ratioAb; %nM
+        DrugB_Ab = (y1B+y2B+y3B)*Abbulk*Ac_ratioAb; %nM
         Drug_Antibodies(end+1,:)=Drug_Ab; 
         DrugB_Antibodies(end+1,:)=DrugB_Ab; 
     end
@@ -139,24 +151,24 @@ save results_radio 'Int_Radio' 'Ti' 'xpt'
 % Spatio-temporal evolution of total (active and inactive) drug concentration 
 [X,T]=meshgrid(xpt,Ti);
 % Generates Figure 1(B) left panel
-drug_3d_Ab_50_Lip_50(X*200, T, Drug_Radio+DrugB_Radio, [0 200], [18 18], [0 0])
+drug_3d_Ab_50_Lip_50(300*(max(max(X))-X), T, Drug_Radio+DrugB_Radio, [0 200], [18 18], [0 0])
 
 % Generate figure illustrating the time integrated drug concentration 
 % Figure 1(B) right panel
-integrated_drug_3d_Ab_50_Lip_50(X*200, T, Int_Radio, [0 200], [18 18], [0 0])
+integrated_drug_3d_Ab_50_Lip_50(300*(max(max(X))-X), T, Int_Radio, [0 300], [18 18], [0 0])
 
 % Generate figure illustrating the survival fraction of cancer cells when
 % using a 50/50 Ab/Liposome cocktail 
 % this reproduces the orange line in Figure 1 (C) middle panel
-survival_fraction(xpt*200,exp(-0.015*Int_Radio(65,:))*100,Lf)
+survival_fraction(300*(max(xpt)-xpt),exp(-400*Int_Radio(65,:))*100,Lf,Ac_tot*1000)
 
 % Compute average survival fraction over all tumor spheroid volume 
-x=xpt*200; y=exp(-0.015*Int_Radio(65,:))*100; y=y';
+x=xpt*300; y=exp(-400*Int_Radio(65,:))*100; y=y';
 SF_average=trapz(x,x.^2.*y)*3/x(end)^3;
 
-fprintf(['Cocktail: ',num2str(Lf*60), ' nM carried by Liposomes \n'])
-fprintf(['              ',num2str((1-Lf)*60), ' nM carried by Antibodies \n'])
-fprintf(['Average survival fraction for 200 um spheroid = ', num2str(SF_average),'%% \n'])
+fprintf(['Cocktail: ',num2str(Lf*Ac_tot*1000), ' nM carried by Liposomes \n'])
+fprintf(['              ',num2str((1-Lf)*Ac_tot*1000), ' nM carried by Antibodies \n'])
+fprintf(['Average survival fraction for 300 um spheroid = ', num2str(SF_average),'%% \n'])
 fprintf('\n')
 
 
