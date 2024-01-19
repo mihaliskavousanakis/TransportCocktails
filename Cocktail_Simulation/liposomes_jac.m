@@ -1,4 +1,4 @@
-function ajac=liposomes_jac(t,y,xpt,Deff,hd,xpor,Dd,phiD,cinf)
+function ajac=liposomes_jac(t,y,xpt,Deff,hd,xpor,Dd,hdd,phiD,cinf)
 % kspent
 thalf=10*24; %hrs
 kspent = log(2)/thalf;
@@ -18,7 +18,7 @@ pH =@(x) (7.4929-6.5778)/2*tanh((x-0.6240)*7.8671)+(7.4929+6.5778)/2;
 % drug release ph dependence
 kd=@(x) -3.8195*pH(x) + 28.8336;
 % drug uptake ph dependence
-kup=@(x) 0.0052*pH(x) -0.0307;
+kup=@(x) 0*(0.0052*pH(x) -0.0307);
 
 i=1:np; i=i';
 for met=1:26
@@ -275,7 +275,8 @@ ajac=ajac+sparse(nd,j(met,i),kspent*xpt(i).^2.*phiL(xpt(i)),npt,npt);
 met=23; 
 nd=j(met,i); 
 ndm=j(met,i-1); 
-hdd=1*hd;
+
+hdd=hd;
 
 phie=phiD(xe); phiw=phiD(xw);
 ajac=ajac+sparse(nd,nd,- (Dd*phiw*xw^2)/dx^2 - (2*Dd*dx*hdd*phie*xe^2)/(hdd*dx^3 + 2*Dd*phie*dx^2),npt,npt);
@@ -288,7 +289,7 @@ ajac=ajac+sparse(nd,nd,-kup(xpt(i)).*xpt(i).^2*phiD(xpt(i))-kspent*xpt(i).^2.*ph
 metB=met+1; 
 nd=j(metB,i); 
 ndm=j(metB,i-1); 
-hdd=1*hd;
+
 
 phie=phiD(xe); phiw=phiD(xw);
 ajac=ajac+sparse(nd,nd,- (Dd*phiw*xw^2)/dx^2 - (2*Dd*dx*hdd*phie*xe^2)/(hdd*dx^3 + 2*Dd*phie*dx^2),npt,npt);
