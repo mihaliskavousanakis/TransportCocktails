@@ -4,7 +4,7 @@ function [xpt,ytheor] = specliposome_clearance(x,y0,tspan)
 DL = x(1); % effective diffusivity 
 hd = x(2); % mass transfer coefficient during clearance
 Dd = x(3); % drug  diffusivity
-
+hdcl=x(4); % drug mass transfer coefficient during clearance
 
 % number of nodes 
 np = 100; 
@@ -52,11 +52,11 @@ j=26*(i-1)+26;
 Mass = Mass + sparse(j,j,1,26*np,26*np);
 
     
-options = odeset('Mass',Mass,'Jacobian',@(t,y) liposomes_jac(t,y,xpt,DL,hd,xpor,Dd,phiD,0));
+options = odeset('Mass',Mass,'Jacobian',@(t,y) liposomes_jac(t,y,xpt,DL,hd,xpor,Dd,hdcl,phiD,0));
 
 % tspan: measured in hrs
 
-[t,y] = ode15s(@(t,y) liposomes(t,y,xpt,DL,hd,xpor,Dd,phiD,0), tspan, y0, options);
+[t,y] = ode15s(@(t,y) liposomes(t,y,xpt,DL,hd,xpor,Dd,hdcl,phiD,0), tspan, y0, options);
 
 for tmet=1:length(tspan)
     for met=1:22

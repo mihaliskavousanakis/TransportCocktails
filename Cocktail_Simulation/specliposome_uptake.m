@@ -4,6 +4,7 @@ function [xpt,ytheor] = specliposome_uptake(x)
 DL = x(1); % liposome effective diffusivity
 hd = x(2); % mass transfer coefficient during uptake experiments
 Dd = x(3); % drug diffusivity
+hdup=x(4); % drug mass transfer coefficient during uptake experiments.
 
 
 % number of nodes 
@@ -51,11 +52,11 @@ Mass = Mass + sparse(j,j,1,26*np,26*np);
     
 y0=zeros(26*np,1); % initial condition
     
-options = odeset('Mass',Mass,'Jacobian',@(t,y) liposomes_jac(t,y,xpt,DL,hd,xpor,Dd,0.7,1));
+options = odeset('Mass',Mass,'Jacobian',@(t,y) liposomes_jac(t,y,xpt,DL,hd,xpor,Dd,hdup,0.7,1));
 
 % tspan: measured in hrs
 tspan=0:0.5:6;  
-[t,y] = ode15s(@(t,y) liposomes(t,y,xpt,DL,hd,xpor,Dd,0.7,1), tspan, y0, options);
+[t,y] = ode15s(@(t,y) liposomes(t,y,xpt,DL,hd,xpor,Dd,hdup,0.7,1), tspan, y0, options);
 
 for tmet=1:length(tspan)
     for met=1:22
