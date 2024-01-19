@@ -1,4 +1,4 @@
-function dydt=liposomes(t,y,xpt,Deff,hd,xpor,Dd,phiD,cinf)
+function dydt=liposomes(t,y,xpt,Deff,hd,xpor,Dd,hdd,phiD,cinf)
 % kspent
 thalf=10*24; %hrs
 kspent = log(2)/thalf;
@@ -17,7 +17,7 @@ pH =@(x) (7.4929-6.5778)/2*tanh((x-0.6240)*7.8671)+(7.4929+6.5778)/2;
 
 % functional for drug release and drug uptake rate constant
 kd=@(x) -3.8195*pH(x) + 28.8336;
-kup=@(x) 0.0052*pH(x) -0.0307;
+kup=@(x) 0*(0.0052*pH(x) -0.0307);
 
 
 i=1:np; i=i';
@@ -263,8 +263,8 @@ dydt(nd)=Deff/dx*(xe.^2.*phie.*fe-xw.^2.*phiw.*fw)+kd(xpt(i))/0.1.*phiL(xpt(i)).
 met=23; 
 nd=j(met,i); 
 ndm=j(met,i-1); 
-hdd=1*hd;
-ce=(hd*0+2*Dd*phiD(xe)/dx*y(nd))/(2*Dd*phiD(xe)/dx+hdd);
+
+ce=(hd*0+2*Dd*phiD(xe)/dx*y(nd))/(2*Dd*phiD(xe)/dx+hd);
 fe=(ce-y(nd))/(dx/2); 
 fw=(y(nd)-y(ndm))/dx; 
 phie=phiD(xe); phiw=phiD(xw);
@@ -277,8 +277,8 @@ dydt(nd)=dydt(nd)-kup(xpt(i)).*xpt(i).^2*phiD(xpt(i)).*y(nd)-kspent*y(nd).*xpt(i
 metB=met+1; 
 nd=j(metB,i); 
 ndm=j(metB,i-1); 
-hdd=1*hd;
-ce=(hd*0+2*Dd*phiD(xe)/dx*y(nd))/(2*Dd*phiD(xe)/dx+hdd);
+
+ce=(hd*0+2*Dd*phiD(xe)/dx*y(nd))/(2*Dd*phiD(xe)/dx+hd);
 fe=(ce-y(nd))/(dx/2); 
 fw=(y(nd)-y(ndm))/dx; 
 phie=phiD(xe); phiw=phiD(xw);
